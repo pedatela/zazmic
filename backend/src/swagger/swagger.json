@@ -1,0 +1,278 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Zazmic",
+      "description": "This is an API Zazmic",
+      "version": "1.0.0",
+      "contact": {
+        "email": "lucaspedatela@gmail.com"
+      }
+    },
+    "paths": {
+      "/api/healthcheck": {
+        "get": {
+          "tags": [
+            "Healthcheck"
+          ],
+          "summary": "Get the Status from the application",
+          "description": "Get the Status from the application",
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "uptime": {
+                          "type": "number"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "date": {
+                          "type": "string",
+                          "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/client": {
+        "post": {
+          "tags": [
+            "Clients"
+          ],
+          "summary": "Create a new Client",
+          "description": "Create a new client",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Body required in the request",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/CreateClientRequest"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "coach": {
+                          "type": "boolean"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/session": {
+        "post": {
+          "tags": [
+            "Session"
+          ],
+          "summary": "Create a new Session",
+          "description": "Create a new Session",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Body required in the request",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/CreateSessionRequest"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "client_id": {
+                          "type": "string"
+                        },
+                        "coach_id": {
+                          "type": "string"
+                        },
+                        "duration": {
+                          "type": "number"
+                        },
+                        "start": {
+                            "type": "string",
+                            "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        },
+                        "canceled_at": {
+                            "type": "string",
+                            "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        },
+                        "past": {
+                            "type": "boolean"
+                        },
+                        "cancelable": {
+                            "type": "boolean"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/coach/{coach_id}/available": {
+        "get": {
+          "tags": [
+            "Coach"
+          ],
+          "summary": "Get available Times from a Coach",
+          "description": "Get available Times from a Coach",
+          "parameters": [
+            {
+              "name": "coach_id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+                "in": "query",
+                "name": "date",
+                "type": "string",
+                "pattern": "YYYY-MM-DD",
+                "description": "The date that you want to see the available hours",
+                "required": true
+              }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "time": {
+                          "type": "string"
+                        },
+                        "value": {
+                            "type": "string",
+                            "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+                        },
+                        "available": {
+                            "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+        "CreateClientRequest": {
+            "properties": {
+              "name": {
+                "title": "name",
+                "type": "string"
+              },
+              "email": {
+                "title": "email",
+                "type": "string"
+              },
+              "coach": {
+                "title": "Coach",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "name",
+              "email",
+              "coach"
+            ],
+            "title": "CreateClientRequest",
+            "type": "object"
+        },
+        "CreateSessionRequest": {
+            "properties": {
+              "client_id": {
+                "title": "name",
+                "type": "string"
+              },
+              "coach_id": {
+                "title": "email",
+                "type": "string"
+              },
+              "start": {
+                "title": "Coach",
+                "type": "string",
+                "pattern": "YYYY-MM-DDTHH:mm:ss.msZ"
+              },
+              "duration": {
+                "title": "Coach",
+                "type": "number"
+              }
+            },
+            "required": [
+              "name",
+              "email",
+              "coach"
+            ],
+            "title": "CreateClientRequest",
+            "type": "object"
+        }
+    }
+  }

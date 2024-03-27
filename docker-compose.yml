@@ -1,0 +1,30 @@
+version: "3"
+
+services: 
+  server:
+      build: ./backend
+      command: npm start
+      restart: on-failure:10
+      ports: 
+          - "3333:3333"
+      volumes: 
+          - ./backend:/usr/src/backend
+          - /usr/src/backend/node_modules
+      environment:
+          DB_HOST: postgres
+          DB_USER: docker
+          DB_PASSWORD: docker
+          DB_NAME: zazmic
+      depends_on:
+          - postgres
+  postgres:
+      image: postgres:12.2
+      ports: 
+          - "5433:5432"
+      environment:
+          POSTGRES_PASSWORD: docker
+          POSTGRES_USER: docker
+      volumes: 
+          - ./postgres_data:/var/lib/postgresql/data
+
+        
